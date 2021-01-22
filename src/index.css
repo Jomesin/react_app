@@ -1,0 +1,24 @@
+@import "~antd/dist/antd.css";
+
+body {
+	background: #fff;
+	height: 100%;
+}
+
+#root {
+	height: 100%;
+}
+
+/* 设置侧边栏的logo图片 */
+.logo {
+    margin: 16px;
+}
+
+.logo img {
+    height: 70px;
+}
+
+/* 设置容器的背景颜色 */
+.site-layout .site-layout-background {
+    background: #fff;
+}
