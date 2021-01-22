@@ -1,0 +1,47 @@
+{
+    "editor.tabSize": 4,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "html",
+        "vue"
+    ],
+    "eslint.alwaysShowStatus": true,
+    "files.autoSave": "off",
+    "editor.formatOnType": true,
+    // 每次保存的时候自动格式化
+    "editor.formatOnSave": true,
+    // #每次保存的时候将代码按eslint格式进行修复
+    // "eslint.autoFixOnSave": true,
+    "files.associations": {
+        "*.js": "javascriptreact"
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "vsicons.projectDetection.disableDetect": true,
+    "workbench.iconTheme": "vscode-icons",
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    // 不去掉代码结尾的分号
+    "prettier.semi": true,
+    // 让prettier使用eslint的代码格式进行校验
+    "prettier.eslintIntegration": true,
+    // 使用单引号替代双引号
+    // "prettier.singleQuote": false,
+    // 让函数(名)和后面的括号之间加个空格
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "editor.fontSize": 16,
+    "prettier.trailingComma": "none",
+    // 修改prettier的默认配置
+    "prettier.tabWidth": 4,
+    "pathAlias.aliasMap": {
+        "@": "${cwd}/src",
+        "@css": "{cwd}/src/static/css",
+        "@images": "{cwd}/src/static/images",
+        "@js": "{cwd}/src/static/js",
+        "@view": "{cwd}/src/components"
+    }
+}
