@@ -1,0 +1,41 @@
+@import "~antd/dist/antd.css";
+@import "@css/public.less";
+
+/* 菜单样式 */
+.custom-sider {
+    overflow: auto;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    /* 设置侧边栏的logo图片 */
+    .logo {
+        margin: @fontD;
+        img {
+            height: 4.375rem;
+        }
+    }
+}
+
+/* 头部样式 */
+.custom-header {
+    flex: 0 0 auto;
+    padding-left: @fontD;
+    height: 6.875rem;
+    background: @colorG;
+}
+
+/* 内容部分 */
+.custom-content {
+    flex: 1 0 auto;
+    margin: 1.5rem 1rem 0;
+    overflow: auto;
+    min-height: calc(100vh - 12.5rem - 4.375rem);
+    background: @colorG;
+}
+
+/* 尾部部分 */
+.custom-footer {
+    flex: 0 0 auto;
+    text-align: center;
+    height: 4.375rem;
+}
