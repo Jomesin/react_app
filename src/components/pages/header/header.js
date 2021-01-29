@@ -1,8 +1,8 @@
 import React from "react";
 import { Row, Col, Image, Button, Avatar } from "antd";
-import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./body.less";
+import { withRouter } from "react-router-dom";
 
 
 class CustomHeader extends React.Component {
@@ -18,16 +18,8 @@ class CustomHeader extends React.Component {
     }
 
     async handleUserLogout () {
-        console.log("用户登出成功!");
-        let isLoginStatus = this.props.isLoginStatus;
-
-        // 如果用户已经登录了
-        if (isLoginStatus) {
-            // 设置登出状态,方法是异步方法,所以需要使用await阻塞
-            await this.props.changeLoginStatus(isLoginStatus);
-            // 跳转路由
-            this.props.history.push("/login");
-        }
+        // 登出按钮点击事件
+        await this.props.history.push("/login");
     }
 
     render () {
@@ -41,10 +33,10 @@ class CustomHeader extends React.Component {
 
                     </Col>
                     <Col span={4} className="header_top_user">
-                        <Avatar src={<Image src={this.state.userImg} alt="头像"/>}></Avatar>
+                        <Avatar src={<Image src={this.state.userImg} alt="头像" />}></Avatar>
                         <span>欢迎回来，{this.state.userName}</span>
                         &nbsp;&nbsp;
-                        <Button type="primary" shape="round" onClick={this.handleUserLogout} size="small">退出</Button>
+                        <Button type="primary" shape="round" onClick={this.handleUserLogout} size="small">退出登录</Button>
                     </Col>
                 </Row>
                 <Row className="header_bottom" wrap={false}>
@@ -59,5 +51,4 @@ CustomHeader.propTypes = {
     isLoginStatus: PropTypes.bool  // 限制父组件传入的值必须要为布尔值
 };
 
-// 因为该组件不在Route组件包裹,所以无法读取this.props.history的值,必须要使用withRouter
 export default withRouter(CustomHeader);
