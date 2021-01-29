@@ -1,11 +1,15 @@
 import React from "react";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button, Checkbox, message } from "antd";
 import { LoginOutlined, UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import "./login.less";
+import { $post, $path } from "@/api/http.js";
+
+// 导入自定义缓存包
+import Storage from "@/utils/storage.js";
 
 
-export default class Login extends React.Component {
+class Login extends React.Component {
     // 登录组件页面
     constructor(props) {
         super(props);
@@ -20,23 +24,34 @@ export default class Login extends React.Component {
         };
     }
 
-    handleSubmitSucess (values) {
+    async handleSubmitSucess (values) {
         // 提交表单且数据验证成功后的回调事件
-        // this.setState({
-        //     formData: {
-        //         username: values.username,
-        //         password: values.password
-        //     }
-        // });
         // 准备调用后台接口进行用户登录
-        let vm = this;
-        console.log(vm, "这是vm");
-        console.log(this, "这是this");
-        vm.$post(vm.$path + "/users/login", {
+        await $post($path + "/users/login", {
             username: values.username,
             password: values.password
         }).then((res) => {
-            console.log(res, "这是响应");
+            switch (res.status_code) {
+                case 200:
+                    let listData = res.data_info.list_data;  // 获取后台返回信息数据
+                    let storage = new Storage();
+                    storage.setItem({
+                        name: "token",
+                        value: listData.access_token,
+                        expires: 1000 * 60 * 60 * 4  // 4小时失效期
+                    });
+                    storage.setItem({
+                        name: "user",
+                        value: listData,
+                        expires: 1000 * 60 * 60 * 4  // 4小时失效期
+                    });
+                    message.success("登录成功!");
+                    this.props.history.push("/home");
+                    break;
+
+                default:
+                    break;
+            }
         });
     }
 
@@ -47,7 +62,8 @@ export default class Login extends React.Component {
 
     render() {
         return (
-            <div className="login_frame">
+            <section className="login_frame">
+                <h1>登&ensp;录</h1>
                 <p className="image_logo"><img src={require("@images/login_tray.png").default} alt="Logo图片" /></p>
 
                 <Form
@@ -82,10 +98,12 @@ export default class Login extends React.Component {
                             htmlType="submit"
                             icon={<LoginOutlined />}
                             className="login-form-submit">Log in</Button>
-                        Or <Link to="">立即注册!</Link>
+                        Or <Link to="/register">立即注册!</Link>
                     </Form.Item>
                 </Form>
-            </div>
+            </section>
         );
     }
 }
+
+export default Login;
