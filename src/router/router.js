@@ -1,6 +1,6 @@
 import React from "react";
 import { Menu } from "antd";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link, Switch, Route, Redirect } from "react-router-dom";
 
 class CustomMenu extends React.Component {
     // 动态渲染菜单组件
@@ -51,15 +51,15 @@ class SwitchRoute extends React.Component {
         this.state = {
             routeData: [
                 {
-                    id: 2,
-                    path: "/",
+                    id: 1,  // 首页
+                    path: "/home",
                     filePath: "home/home.js"
                 }
             ]
         };
     }
 
-    render() {
+    render () {
         return (
             <Switch>
                 {this.state.routeData.map((item) => {
@@ -68,13 +68,12 @@ class SwitchRoute extends React.Component {
                             exact
                             key={item.id}
                             path={item.path}
-                            component={
-                                require(`../components/pages/${item.filePath}`)
-                                    .default
-                            }
+                            component={require(`@view/pages/${item.filePath}`).default}
                         />
                     );
                 })}
+                {/* 如果上面路由未匹配到,则重定向到下面 */}
+                <Redirect to="/home" />
             </Switch>
         );
     }
