@@ -4,11 +4,9 @@ import React from "react";
 class Home extends React.Component {
     render () {
         return (
-            <div>这是首页</div>
+            <h1>欢迎回到首页!</h1>
         );
     }
 }
 
-export {
-    Home
-};
+export default Home;
