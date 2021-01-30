@@ -51,6 +51,7 @@ module.exports = {
         "react/jsx-key": 0,
         "react/prop-types": 0,  // 防止在react组件定义中缺少props验证
         "no-empty-function": 2, // 禁止空函数
-        "no-trailing-spaces": 2 // 禁止禁用行尾空格
+        "no-trailing-spaces": 2, // 禁止禁用行尾空格
+        "no-case-declarations": 0  // 该规则禁止词法声明 (let、const、function 和 class) 出现在 case或default 子句
     }
 };
