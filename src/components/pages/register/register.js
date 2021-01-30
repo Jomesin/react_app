@@ -2,29 +2,28 @@ import React from "react";
 import CustomStep from "@view/others/step.js";
 import CustomSelect from "@view/others/select.js";
 import "./register.less";
-import { Form, Input, Button } from "antd";
+import { Form, Input } from "antd";
+// 导入定时器按钮组件
+import { ButtonTimer } from "@view/others/timer.js";
+// 导入REST API动作方法
+import { $fetch, $path } from "@/api/http.js";
 
 
 class PhoneVerify extends React.Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        // this.handleClick = this.handleClick.bind(this);
         this.handleCountryChange = this.handleCountryChange.bind(this);
-        this.intervalVerified = this.intervalVerified.bind(this);
+        this.handleSendPhone = this.handleSendPhone.bind(this);
+        this.registerTimer = React.createRef();  // 创建ref属性
+        this.registerForm = React.createRef();  // 创建ref属性
         this.state = {
             selectArray: [
                 {name: "+86", value: "+86"},
                 {name: "+1", value: "+1"}
             ],
-            defaultValue: "+86",
-            btnClickStatus: true,
-            desTime: 60,  // 倒计时变量
-            loading: false
+            defaultValue: "+86"
         };
-    }
-
-    handleClick () {
-        console.log("点击");
     }
 
     handleCountryChange (value) {
@@ -32,18 +31,31 @@ class PhoneVerify extends React.Component {
         console.log(value, "------");
     }
 
-    async intervalVerified (event) {
-        // 发送验证码点击事件
-        await this.setState({
-            loading: true
+    async handleSendPhone (event) {
+        let vm = this;
+        // 获取手机验证码
+        let phoneCode = await vm.registerForm.current.getFieldsValue("phone_code");
+        // 调用后台手机验证码接口
+        await $fetch($path + "/users/get_phone_code", {
+            phone_number: phoneCode.phone_code
+        }).then((res) => {
+            console.log(res, "------");
         });
-        event.preventDefault();  // 禁止事件冒泡
+
+        // 调用子组件定时器动画函数
+        await vm.registerTimer.current.intervalVerified(event);
+
+
     }
 
     // 手机验证码表单组件
     render () {
         return (
-            <Form className="phone_code_frame" name="phone_code" onFinish={this.handleClick}>
+            <Form
+                ref={this.registerForm}
+                className="phone_code_frame"
+                name="phone_code">
+
                 <Form.Item name="phone_code" label="手机号" rules={[{ required: true }]} className="form-phone-code">
                     <Input
                         addonBefore={<CustomSelect
@@ -54,17 +66,13 @@ class PhoneVerify extends React.Component {
                 </Form.Item>
 
                 <Form.Item label="验证码">
+
                     <Form.Item name="verification_code" rules={[{ required: true }]} noStyle>
                         <Input style={{ width: "10rem" }} placeholder="请输入手机号" />
                     </Form.Item>
-                    <Button
-                        loading={this.state.loading}
-                        shape="round"
-                        disabled={this.state.btnClickStatus ? false : true}
-                        onClick={ this.intervalVerified }>
-                        {
-                            this.state.btnClickStatus ? "发送验证码" : this.state.desTime + "秒"
-                        }</Button>
+
+                    {/* 定时器按钮组件 */}
+                    <ButtonTimer ref={this.registerTimer} onClick={ this.handleSendPhone } />
                 </Form.Item>
             </Form>
         );
@@ -100,7 +108,7 @@ class Register extends React.Component {
     render () {
         return (
             <section className="register_frame">
-                <h1>注&ensp;册</h1>
+                <h1 className="frame_title">注&ensp;册</h1>
                 <p className="image_logo"><img src={require("@images/login_tray.png").default} alt="Logo图片" /></p>
                 <CustomStep steps={this.state.steps} />
             </section>
