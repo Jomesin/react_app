@@ -1,34 +1,23 @@
 import React from "react";
-import { Steps, Button, message } from "antd";
+import { Steps, Button } from "antd";
 import PropTypes from "prop-types";
 
 
 class CustomStep extends React.Component {
     constructor(props) {
         super(props);
-        this.handleNext = this.handleNext.bind(this);
-        this.handlePerv = this.handlePerv.bind(this);
-        this.handleDone = this.handleDone.bind(this);
+        this.handleChangeCurrent = this.handleChangeCurrent.bind(this);
         this.state = {
             current: this.props.current
         };
     }
 
-    handleNext () {
-        this.setState((state) => ({
-            current: state.current + 1
-        }));
-    }
-
-    handlePerv () {
-        this.setState((state) => ({
-            current: state.current - 1
-        }));
-    }
-
-    handleDone () {
-        console.log("结束");
-        message.success("完成了");
+    async handleChangeCurrent (current) {
+        // 变更步骤页当前页
+        const vm = this;
+        await vm.setState({
+            current: current
+        });
     }
 
     render () {
@@ -48,10 +37,10 @@ class CustomStep extends React.Component {
                 <div>{ steps[current].content }</div>
 
                 {/* 步骤组件按钮部分 */}
-                <div>
+                <div style={{ padding: "2.5rem 1rem" }}>
                     {
                         current < steps.length - 1 && (
-                            <Button type="primary" onClick={this.handleNext}>
+                            <Button type="primary" onClick={this.props.handleNext}>
                                 下一步
                             </Button>
                         )
@@ -59,7 +48,7 @@ class CustomStep extends React.Component {
 
                     {
                         current === steps.length - 1 && (
-                            <Button type="primary" onClick={this.handleDone}>
+                            <Button type="primary" onClick={this.props.handleDone}>
                                 完成
                             </Button>
                         )
@@ -67,7 +56,7 @@ class CustomStep extends React.Component {
 
                     {
                         current > 0 && (
-                            <Button type="primary" onClick={this.handlePerv}>
+                            <Button type="primary" onClick={this.props.handlePerv}>
                                 上一步
                             </Button>
                         )
@@ -93,9 +82,17 @@ CustomStep.propTypes = {
 };
 
 
+function noop () {
+    console.log();
+}
+
+
 // 步骤组件默认值
 CustomStep.defaultProps = {
-    current: 0
+    current: 0,
+    handleNext: noop,
+    handleDone: noop,
+    handlePerv: noop
 };
 
 
