@@ -20,3 +20,18 @@ for file in dir_path:  # 遍历所有文件
 
         else:  # 如果不是MRO上的商品,如何处理,可以不写
             pass
+        
+
+"""" 分行正则撰写  """
+import os
+import re
+
+
+# 该正则为，匹配中英文括号的内容，然后依据不同的模式匹配不一样
+regex = re.compile(r"[(|（](.*?)[)|）]")  # 创建正则对象
+
+filenames = os.listdir(r"D:\DownloadPackage\test")  # 获取该目录
+# 模式match从头匹配，不可选用，模式findall可以用,但是后面提取会很麻烦,模式search搜索中英文圆括号的内容
+# [1:-1]截取掉圆括号,转换数据类型
+filenames.sort(key=lambda x: int(regex.search(x).group(0)[1:-1]), reverse=True)  # True为倒序，False为倒序
+print(filenames)
